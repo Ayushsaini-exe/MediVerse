@@ -20,6 +20,7 @@ if (firebaseConfig.apiKey) {
     auth = getAuth(app);
 } else {
     console.error("Firebase configuration is missing. Please check your .env file and ensure it is prefixed with NEXT_PUBLIC_ and that the development server was restarted.");
+    // Provide non-functional placeholders to prevent crashing the app
     app = {} as FirebaseApp;
     auth = {} as Auth;
 }
