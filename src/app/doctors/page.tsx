@@ -30,7 +30,7 @@ const mockDoctors: Doctor[] = [
     experience: "15 years",
     reviews: { rating: 4.9, count: 215 },
     availability: [],
-    image: "https://picsum.photos/400/400",
+    image: "https://picsum.photos/seed/dr-reed/400/400",
   },
   {
     id: "2",
@@ -41,7 +41,7 @@ const mockDoctors: Doctor[] = [
     experience: "12 years",
     reviews: { rating: 4.8, count: 189 },
     availability: [],
-    image: "https://picsum.photos/400/401",
+    image: "https://picsum.photos/seed/dr-chen/400/401",
   },
   {
     id: "3",
@@ -52,7 +52,7 @@ const mockDoctors: Doctor[] = [
     experience: "20 years",
     reviews: { rating: 4.9, count: 320 },
     availability: [],
-    image: "https://picsum.photos/401/400",
+    image: "https://picsum.photos/seed/dr-garcia/401/400",
   },
   {
     id: "4",
@@ -63,7 +63,7 @@ const mockDoctors: Doctor[] = [
     experience: "18 years",
     reviews: { rating: 4.7, count: 150 },
     availability: [],
-    image: "https://picsum.photos/401/401",
+    image: "https://picsum.photos/seed/dr-carter/401/401",
   },
 ];
 

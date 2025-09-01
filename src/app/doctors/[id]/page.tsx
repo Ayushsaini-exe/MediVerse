@@ -12,6 +12,9 @@ import { Star, Award, Briefcase, MapPin, Calendar, Clock } from "lucide-react";
 import type { Doctor } from "@/lib/types";
 import { HeartPulse } from 'lucide-react';
 import { CardiologyIcon } from "@/components/icons/cardiology-icon";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+
 
 const mockDoctor: Doctor = {
   id: "1",
@@ -22,7 +25,7 @@ const mockDoctor: Doctor = {
   experience: "15 years of experience in clinical cardiology, specializing in heart failure and preventative care.",
   reviews: { rating: 4.9, count: 215 },
   availability: ["2024-08-20", "2024-08-22", "2024-08-25"],
-  image: "https://picsum.photos/400/400",
+  image: "https://picsum.photos/seed/dr-reed/400/400",
 };
 
 export default function DoctorProfilePage({ params }: { params: { id: string } }) {
@@ -86,7 +89,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
                            <Calendar className="w-5 h-5 text-primary" /> Book Date
                         </h3>
                         <div className="mt-2 border-4 border-black p-2 bg-white">
-                             <Calendar 
+                             <DayPicker 
                                 mode="single"
                                 className="!p-0"
                             />
