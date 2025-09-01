@@ -15,6 +15,7 @@ let app: FirebaseApp;
 let auth: Auth;
 
 if (firebaseConfig.apiKey) {
+    console.log("Firebase config loaded, initializing app...");
     app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     auth = getAuth(app);
 } else {
