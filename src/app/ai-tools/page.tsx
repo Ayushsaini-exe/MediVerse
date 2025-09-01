@@ -70,15 +70,15 @@ export default function AiToolsPage() {
                 <CardDescription>{tool.description}</CardDescription>
               </CardContent>
               <div className="p-6 pt-0">
-                <Link
-                  href={tool.href}
-                  className={cn(
-                    buttonVariants({ variant: "default" }),
-                    "w-full bg-accent hover:bg-accent/90"
-                  )}
-                >
-                  Start Assessment
-                  <ArrowRight className="ml-2 h-4 w-4 inline" />
+                <Link href={tool.href} passHref>
+                  <Button
+                    className={cn(
+                      "w-full bg-accent hover:bg-accent/90"
+                    )}
+                  >
+                    Start Assessment
+                    <ArrowRight className="ml-2 h-4 w-4 inline" />
+                  </Button>
                 </Link>
               </div>
             </Card>
