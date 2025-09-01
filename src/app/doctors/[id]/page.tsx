@@ -1,4 +1,6 @@
 // src/app/doctors/[id]/page.tsx
+"use client";
+
 import Image from "next/image";
 import { Header } from "@/components/layout/header";
 import {
@@ -51,7 +53,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
                     width={150}
                     height={150}
                     className="object-cover w-full h-full rounded-full"
-                    data-ai-hint="professional headshot"
+                    data-ai-hint="professional headshot person"
                   />
                 </div>
                 <h2 className="mt-4 text-2xl font-bold">{doctor.name}</h2>
@@ -96,7 +98,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
                         </div>
                     </div>
                     <div className="space-y-2">
-                         <h3 className="text-lg font-semibold flex items-center gap-2">
+                         <h3 className="text-lg fontsemibold flex items-center gap-2">
                            <Clock className="w-5 h-5 text-primary" /> Book Time
                         </h3>
                         <div className="grid grid-cols-2 gap-2 pt-2">
