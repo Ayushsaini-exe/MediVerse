@@ -1,4 +1,4 @@
-// src/app/(auth)/signup/page.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -27,7 +27,6 @@ export default function SignupPage() {
     event.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // useRouter will redirect to dashboard
     } catch (error: any) {
       toast({
         title: "Signup Failed",
@@ -41,7 +40,6 @@ export default function SignupPage() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-       // useRouter will redirect to dashboard
     } catch (error: any) {
       toast({
         title: "Google Signup Failed",

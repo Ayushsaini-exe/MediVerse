@@ -1,5 +1,4 @@
 
-// src/firebase/client.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 
@@ -19,8 +18,7 @@ if (firebaseConfig.apiKey) {
     app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     auth = getAuth(app);
 } else {
-    console.error("Firebase API key is missing. Please check your .env file and ensure it is prefixed with NEXT_PUBLIC_ and that the development server was restarted.");
-    // Provide dummy objects to prevent the app from crashing
+    console.error("Firebase configuration is missing. Please check your .env file and ensure it is prefixed with NEXT_PUBLIC_ and that the development server was restarted.");
     app = {} as FirebaseApp;
     auth = {} as Auth;
 }

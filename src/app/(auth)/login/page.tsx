@@ -1,4 +1,4 @@
-// src/app/(auth)/login/page.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/icons/logo";
 import { FormEvent, useState } from "react";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,7 +27,6 @@ export default function LoginPage() {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // useRouter will redirect to dashboard
     } catch (error: any) {
       toast({
         title: "Login Failed",
@@ -41,7 +40,6 @@ export default function LoginPage() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      // useRouter will redirect to dashboard
     } catch (error: any) {
        toast({
         title: "Google Login Failed",
