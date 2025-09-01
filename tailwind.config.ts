@@ -13,6 +13,7 @@ export default {
         body: ['PT Sans', 'sans-serif'],
         headline: ['PT Sans', 'sans-serif'],
         code: ['monospace'],
+        pixel: ['"Press Start 2P"', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
