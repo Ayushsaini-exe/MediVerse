@@ -1,3 +1,4 @@
+// src/components/layout/app-sidebar.tsx
 "use client";
 
 import {
@@ -20,9 +21,12 @@ import {
 import { Logo } from "@/components/icons/logo";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
+import { useAuth } from "@/hooks/use-auth";
+import { auth } from "@/firebase/client";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const menuItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard", tooltip: "Dashboard" },
@@ -33,12 +37,17 @@ export function AppSidebar() {
   
   const bottomMenuItems = [
     { href: "/profile", icon: User, label: "Profile", tooltip: "Profile" },
-    { href: "/login", icon: LogOut, label: "Logout", tooltip: "Logout" },
   ];
 
   const isActive = (href: string) => {
     return pathname === href;
   };
+
+  const handleLogout = async () => {
+    await auth.signOut();
+  };
+
+  if (!user) return null;
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
@@ -80,6 +89,15 @@ export function AppSidebar() {
                 </Link>
             </SidebarMenuItem>
           ))}
+           <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={handleLogout}
+                tooltip="Logout"
+              >
+                <LogOut />
+                <span>Logout</span>
+              </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

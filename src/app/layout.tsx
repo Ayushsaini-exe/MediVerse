@@ -7,6 +7,7 @@ import {
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { Chatbot } from "@/components/chatbot/chatbot";
+import { AuthProvider } from "@/components/auth/auth-provider";
 
 export const metadata: Metadata = {
   title: "MediVerse",
@@ -29,16 +30,18 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <div className="min-h-screen">
-                {children}
-              </div>
-            </SidebarInset>
-        </SidebarProvider>
-        <Toaster />
-        <Chatbot />
+        <AuthProvider>
+          <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <div className="min-h-screen">
+                  {children}
+                </div>
+              </SidebarInset>
+          </SidebarProvider>
+          <Toaster />
+          <Chatbot />
+        </AuthProvider>
       </body>
     </html>
   );
