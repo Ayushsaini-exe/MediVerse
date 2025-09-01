@@ -16,6 +16,7 @@ import { HeartPulse } from 'lucide-react';
 import { CardiologyIcon } from "@/components/icons/cardiology-icon";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { useEffect, useState } from "react";
 
 
 const mockDoctor: Doctor = {
@@ -32,6 +33,11 @@ const mockDoctor: Doctor = {
 
 export default function DoctorProfilePage({ params }: { params: { id: string } }) {
   const doctor = mockDoctor;
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const timeSlots = ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM"];
 
@@ -91,10 +97,10 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
                            <Calendar className="w-5 h-5 text-primary" /> Book Date
                         </h3>
                         <div className="mt-2 border-4 border-black p-2 bg-white">
-                             <DayPicker 
+                             {isMounted && <DayPicker 
                                 mode="single"
                                 className="!p-0"
-                            />
+                            />}
                         </div>
                     </div>
                     <div className="space-y-2">
