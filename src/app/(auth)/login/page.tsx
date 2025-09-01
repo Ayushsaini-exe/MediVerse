@@ -25,14 +25,6 @@ export default function LoginPage() {
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
-    if (!auth) {
-        toast({
-        title: "Login Failed",
-        description: "Authentication service is not configured.",
-        variant: "destructive",
-        });
-        return;
-    }
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
@@ -45,14 +37,6 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    if (!auth) {
-        toast({
-        title: "Google Login Failed",
-        description: "Authentication service is not configured.",
-        variant: "destructive",
-        });
-        return;
-    }
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);

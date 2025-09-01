@@ -15,12 +15,17 @@ let app: FirebaseApp;
 let auth: Auth;
 
 if (firebaseConfig.apiKey) {
-    console.log("Firebase config loaded, initializing app...");
-    app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    if (!getApps().length) {
+        app = initializeApp(firebaseConfig);
+        console.log("Firebase initialized successfully.");
+    } else {
+        app = getApp();
+        console.log("Firebase app already initialized.");
+    }
     auth = getAuth(app);
 } else {
-    console.error("Firebase configuration is missing. Please check your .env file and ensure it is prefixed with NEXT_PUBLIC_ and that the development server was restarted.");
-    // Provide non-functional placeholders to prevent crashing the app
+    console.error("Firebase configuration is missing or incomplete. Please check your .env file and ensure it is prefixed with NEXT_PUBLIC_ and that the development server was restarted.");
+    // Provide non-functional placeholders to prevent crashing the app on the server.
     app = {} as FirebaseApp;
     auth = {} as Auth;
 }
