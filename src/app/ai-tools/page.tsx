@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Droplets, HeartPulse, BrainCircuit } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const tools = [
   {
@@ -68,12 +70,16 @@ export default function AiToolsPage() {
                 <CardDescription>{tool.description}</CardDescription>
               </CardContent>
               <div className="p-6 pt-0">
-                <Button asChild className="w-full bg-accent hover:bg-accent/90">
-                  <Link href={tool.href}>
-                    Start Assessment
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                <Link
+                  href={tool.href}
+                  className={cn(
+                    buttonVariants({ variant: "default" }),
+                    "w-full bg-accent hover:bg-accent/90"
+                  )}
+                >
+                  Start Assessment
+                  <ArrowRight className="ml-2 h-4 w-4 inline" />
+                </Link>
               </div>
             </Card>
           ))}

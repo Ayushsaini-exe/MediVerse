@@ -9,6 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Stethoscope, Pill, Bot } from "lucide-react";
 import { Header } from "@/components/layout/header";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
   const features = [
@@ -59,12 +61,16 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>{feature.description}</CardDescription>
-                <Button asChild variant="link" className="p-0 mt-4 h-auto">
-                  <Link href={feature.href}>
-                    Go to {feature.title}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                <Link
+                  href={feature.href}
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "p-0 mt-4 h-auto"
+                  )}
+                >
+                  Go to {feature.title}
+                  <ArrowRight className="ml-2 h-4 w-4 inline" />
+                </Link>
               </CardContent>
             </Card>
           ))}
