@@ -21,12 +21,9 @@ import {
 import { Logo } from "@/components/icons/logo";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
-import { useAuth } from "@/hooks/use-auth";
-import { auth } from "@/firebase/client";
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { user } = useAuth();
 
   const menuItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard", tooltip: "Dashboard" },
@@ -44,10 +41,9 @@ export function AppSidebar() {
   };
 
   const handleLogout = async () => {
-    await auth.signOut();
+    // Placeholder for logout functionality
+    console.log("Logout clicked");
   };
-
-  if (!user) return null;
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">

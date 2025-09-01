@@ -21,7 +21,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, Calendar, ShoppingBag, MapPin, User, CheckCircle, Truck, Package } from "lucide-react";
 import type { Appointment, Order } from "@/lib/types";
-import { useAuth } from "@/hooks/use-auth";
 
 const mockAppointments: Appointment[] = [
   {
@@ -46,11 +45,6 @@ const mockOrders: Order[] = [
 ];
 
 export default function ProfilePage() {
-  const { user } = useAuth();
-  
-  if (!user) {
-    return null;
-  }
   
   return (
     <div className="flex flex-col w-full">
@@ -59,13 +53,13 @@ export default function ProfilePage() {
         <Card>
           <CardHeader className="flex-row items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={user.photoURL || "https://picsum.photos/200"} data-ai-hint="person" />
-              <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
+              <AvatarImage src={"https://picsum.photos/200"} data-ai-hint="person" />
+              <AvatarFallback>U</AvatarFallback>
             </Avatar>
             <div>
-              <CardTitle className="text-3xl font-headline">{user.displayName || "User"}</CardTitle>
+              <CardTitle className="text-3xl font-headline">User</CardTitle>
               <div className="flex flex-col md:flex-row md:items-center gap-x-4 gap-y-1 text-muted-foreground mt-1">
-                 <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>{user.email}</div>
+                 <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>user@example.com</div>
               </div>
             </div>
             <Button className="ml-auto">Edit Profile</Button>
