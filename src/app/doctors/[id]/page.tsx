@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Star, Award, Briefcase, MapPin, Calendar, Clock } from "lucide-react";
 import type { Doctor } from "@/lib/types";
+import { HeartPulse } from 'lucide-react';
+import { CardiologyIcon } from "@/components/icons/cardiology-icon";
 
 const mockDoctor: Doctor = {
   id: "1",
@@ -32,17 +34,20 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
     <div className="flex flex-col w-full font-pixel bg-[#E0F2FE] text-[#1E293B]">
       <Header title="Doctor Profile" />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
-        <Card className="rounded-none border-4 border-black shadow-[4px_4px_0px_#000]">
-          <CardContent className="p-6">
+        <Card className="rounded-none border-4 border-black shadow-[4px_4px_0px_#000] relative overflow-hidden">
+          <div className="absolute -right-10 -top-10 opacity-10 text-black">
+              <CardiologyIcon className="w-64 h-64" />
+          </div>
+          <CardContent className="p-6 relative z-10">
             <div className="grid gap-8 md:grid-cols-3">
               <div className="md:col-span-1 flex flex-col items-center text-center">
-                <div className="relative h-40 w-40 overflow-hidden border-4 border-black bg-white p-1">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-black bg-white p-1">
                   <Image
                     src={doctor.image}
                     alt={doctor.name}
                     width={150}
                     height={150}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full rounded-full"
                     data-ai-hint="professional headshot"
                   />
                 </div>
