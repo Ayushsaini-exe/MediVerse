@@ -73,20 +73,6 @@ export default function DashboardPage() {
             </Card>
           ))}
         </div>
-
-        <Card className="bg-primary text-primary-foreground">
-          <CardHeader>
-            <CardTitle className="font-headline">Your Health, Simplified</CardTitle>
-            <CardDescription className="text-primary-foreground/80">
-              Manage appointments, track orders, and gain valuable health insights, all in one place.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>
-              Our platform is designed with a user-friendly and intuitive interface to encourage active participation in managing your health.
-            </p>
-          </CardContent>
-        </Card>
       </main>
     </div>
   );

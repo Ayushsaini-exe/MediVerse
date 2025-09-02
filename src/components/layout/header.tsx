@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Bot, User, LogOut, Stethoscope, Pill } from "lucide-react";
+import { LayoutDashboard, Bot, User, LogOut, Stethoscope, Pill, Info } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,8 +25,9 @@ type HeaderProps = {
 const topNavLinks = [
   { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/doctors", icon: Stethoscope, label: "Doctors" },
-    { href: "/pharmacy", icon: Pill, label: "Pharmacy" },
+  { href: "/pharmacy", icon: Pill, label: "Pharmacy" },
   { href: "/ai-tools", label: "AI Tools", icon: Bot },
+  { href: "/about", label: "About Us", icon: Info },
 ];
 
 export function Header({ title }: HeaderProps) {
