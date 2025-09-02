@@ -29,14 +29,12 @@ export function AppSidebar() {
   const { user, logout } = useAuth();
 
   const menuItems = [
-    { href: "/", icon: LayoutDashboard, label: "Dashboard", tooltip: "Dashboard" },
     { href: "/doctors", icon: Stethoscope, label: "Doctors", tooltip: "Doctors" },
     { href: "/pharmacy", icon: Pill, label: "Pharmacy", tooltip: "Pharmacy" },
-    { href: "/ai-tools", icon: Bot, label: "AI Tools", tooltip: "AI Tools" },
   ];
 
   const isActive = (href: string) => {
-    return pathname === href;
+    return pathname.startsWith(href);
   };
 
   return (
