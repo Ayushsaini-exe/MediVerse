@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/toaster";
 import { Chatbot } from "@/components/chatbot/chatbot";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import { CartProvider } from "@/context/cart-context";
 
 export const metadata: Metadata = {
   title: "MediVerse",
@@ -32,12 +33,14 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <div className="flex-1">{children}</div>
-          </div>
-          <Toaster />
-          <Chatbot />
+          <CartProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <div className="flex-1">{children}</div>
+            </div>
+            <Toaster />
+            <Chatbot />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
