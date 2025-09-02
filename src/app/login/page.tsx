@@ -59,7 +59,7 @@ export default function LoginPage() {
             </div>
             <Button className="w-full" type="submit" disabled={!email}>
               <LogIn className="mr-2 h-4 w-4" />
-              Login as Guest
+              Login
             </Button>
           </CardContent>
         </form>
