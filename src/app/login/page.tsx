@@ -11,23 +11,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LogIn } from "lucide-react";
 
 export default function LoginPage() {
   const { user, loginAsGuest } = useAuth();
   const router = useRouter();
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // If user is already logged in, redirect to the dashboard
     if (user) {
       router.push("/");
     }
   }, [user, router]);
 
-  const handleGuestLogin = () => {
-    loginAsGuest();
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      loginAsGuest(email);
+    }
   };
 
   return (
@@ -36,15 +41,28 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">Welcome!</CardTitle>
           <CardDescription>
-            Log in as a guest to explore the application.
+            Enter your email to continue as a guest.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Button className="w-full" onClick={handleGuestLogin}>
-            <LogIn className="mr-2 h-4 w-4" />
-            Continue as Guest
-          </Button>
-        </CardContent>
+        <form onSubmit={handleLogin}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your.email@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <Button className="w-full" type="submit" disabled={!email}>
+              <LogIn className="mr-2 h-4 w-4" />
+              Login as Guest
+            </Button>
+          </CardContent>
+        </form>
         <CardFooter>
           <p className="text-xs text-muted-foreground text-center w-full">
             Your session will be cleared when you close this browser tab.

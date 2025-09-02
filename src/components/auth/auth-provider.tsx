@@ -15,7 +15,7 @@ interface GuestUser {
 interface AuthContextType {
   user: GuestUser | null;
   loading: boolean;
-  loginAsGuest: () => void;
+  loginAsGuest: (email: string) => void;
   logout: () => void;
 }
 
@@ -43,11 +43,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const loginAsGuest = () => {
+  const loginAsGuest = (email: string) => {
     const guestUser: GuestUser = {
       id: `guest_${Date.now()}`,
-      name: "Guest User",
-      email: "guest@example.com",
+      name: email.split("@")[0] || "Guest User", // Use part of email as name
+      email: email,
     };
     sessionStorage.setItem("guest-user", JSON.stringify(guestUser));
     setUser(guestUser);

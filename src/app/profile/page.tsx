@@ -86,12 +86,12 @@ export default function ProfilePage() {
           <CardHeader className="flex-row items-center gap-4">
             <Avatar className="h-20 w-20">
               <AvatarImage src={"https://picsum.photos/200"} data-ai-hint="person" />
-              <AvatarFallback>G</AvatarFallback>
+              <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div>
-              <CardTitle className="text-3xl font-headline">Guest User</CardTitle>
+              <CardTitle className="text-3xl font-headline">{user.name}</CardTitle>
               <div className="flex flex-col md:flex-row md:items-center gap-x-4 gap-y-1 text-muted-foreground mt-1">
-                 <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>guest@example.com</div>
+                 <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>{user.email}</div>
               </div>
             </div>
           </CardHeader>
