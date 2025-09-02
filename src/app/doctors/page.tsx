@@ -8,9 +8,6 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -212,11 +209,21 @@ function BookingModal({ doctor, isOpen, onOpenChange }: { doctor: Doctor | null;
 export default function DoctorsPage() {
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSpecialty, setSelectedSpecialty] = useState("all");
 
   const handleBookClick = (doctor: Doctor) => {
     setSelectedDoctor(doctor);
     setIsModalOpen(true);
   };
+  
+  const filteredDoctors = mockDoctors.filter(doctor => {
+    const matchesSearch = doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          doctor.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSpecialty = selectedSpecialty === "all" || doctor.specialty === selectedSpecialty;
+
+    return matchesSearch && matchesSpecialty;
+  });
 
   return (
     <div className="flex flex-col w-full min-h-screen">
@@ -230,16 +237,22 @@ export default function DoctorsPage() {
 
         <Card className="mb-8 p-4">
           <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4 items-center">
-            <Input placeholder="Search by name or location..." className="lg:col-span-2" />
-            <Select>
+            <Input 
+              placeholder="Search by name or location..." 
+              className="lg:col-span-2" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Select onValueChange={setSelectedSpecialty} defaultValue="all">
               <SelectTrigger>
                 <SelectValue placeholder="All Specialties" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="cardiology">Cardiology</SelectItem>
-                <SelectItem value="dermatology">Dermatology</SelectItem>
-                <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                <SelectItem value="orthopedics">Orthopedics</SelectItem>
+                <SelectItem value="all">All Specialties</SelectItem>
+                <SelectItem value="Cardiology">Cardiology</SelectItem>
+                <SelectItem value="Dermatology">Dermatology</SelectItem>
+                <SelectItem value="Pediatrics">Pediatrics</SelectItem>
+                <SelectItem value="Orthopedics">Orthopedics</SelectItem>
               </SelectContent>
             </Select>
             <Button className="w-full">
@@ -249,9 +262,15 @@ export default function DoctorsPage() {
           </div>
         </Card>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {mockDoctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} onBookClick={() => handleBookClick(doctor)} />
-          ))}
+          {filteredDoctors.length > 0 ? (
+            filteredDoctors.map((doctor) => (
+              <DoctorCard key={doctor.id} doctor={doctor} onBookClick={() => handleBookClick(doctor)} />
+            ))
+          ) : (
+            <p className="text-center text-muted-foreground col-span-full">
+              No doctors found matching your criteria.
+            </p>
+          )}
         </div>
 
         <BookingModal
