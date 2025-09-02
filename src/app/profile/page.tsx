@@ -84,7 +84,7 @@ export default function ProfilePage() {
         <Card>
           <CardHeader className="flex-row items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={"https://picsum.photos/200"} data-ai-hint="person" />
+              <AvatarImage src={`https://picsum.photos/seed/${user.id}/200/200`} data-ai-hint="person" />
               <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div>
@@ -144,6 +144,17 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                            </CardHeader>
+                           <CardContent>
+                              <div className="space-y-2">
+                                {order.items.map(item => (
+                                  <div key={item.id} className="flex items-center gap-4">
+                                    <Image src={item.image} alt={item.name} width={40} height={40} className="rounded-md" />
+                                    <p>{item.name}</p>
+                                    <p className="ml-auto font-medium">${item.price.toFixed(2)}</p>
+                                  </div>
+                                ))}
+                              </div>
+                           </CardContent>
                         </Card>
                     ))}
                  </div>

@@ -11,22 +11,15 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import {
-  LayoutDashboard,
   Stethoscope,
   Pill,
-  Bot,
-  User,
-  LogOut,
-  LogIn,
 } from "lucide-react";
 import { Logo } from "@/components/icons/logo";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
-import { useAuth } from "@/components/auth/auth-provider";
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
 
   const menuItems = [
     { href: "/doctors", icon: Stethoscope, label: "Doctors", tooltip: "Doctors" },
@@ -62,46 +55,7 @@ export function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          {user ? (
-            <>
-              <SidebarMenuItem>
-                <Link href="/profile">
-                  <SidebarMenuButton
-                    isActive={isActive("/profile")}
-                    tooltip="Profile"
-                  >
-                    <User />
-                    <span>Profile</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={logout}
-                  tooltip="Logout"
-                >
-                  <LogOut />
-                  <span>Logout</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </>
-          ) : (
-            <SidebarMenuItem>
-              <Link href="/login">
-                <SidebarMenuButton
-                  isActive={isActive("/login")}
-                  tooltip="Login"
-                >
-                  <LogIn />
-                  <span>Login</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          )}
-        </SidebarMenu>
-      </SidebarFooter>
+      <SidebarFooter />
     </Sidebar>
   );
 }
