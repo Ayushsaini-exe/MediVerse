@@ -36,7 +36,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col w-full">
-      <Header title="Dashboard" />
+      <Header />
       <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-headline font-bold text-primary">

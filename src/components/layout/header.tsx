@@ -17,13 +17,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Logo } from "@/components/icons/logo";
 
 type HeaderProps = {
-  title: string;
+  title?: string;
 };
 
 const topNavLinks = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/ai-tools", label: "AI Tools", icon: Bot },
 ];
 
@@ -43,7 +44,14 @@ export function Header({ title }: HeaderProps) {
       <div className="flex h-14 w-full items-center">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="md:hidden" />
-          <h1 className="text-2xl font-headline font-semibold">{title}</h1>
+          {title ? (
+            <h1 className="text-2xl font-headline font-semibold">{title}</h1>
+          ) : (
+            <Link href="/" className="flex items-center gap-2">
+              <Logo className="w-8 h-8 text-primary" />
+              <h1 className="text-2xl font-headline font-semibold">MediVerse</h1>
+            </Link>
+          )}
         </div>
         <div className="ml-auto">
           {user ? (
