@@ -18,21 +18,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Mail, Calendar, CheckCircle, Truck, Package } from "lucide-react";
 import type { Appointment, Order } from "@/lib/types";
 import { useAuth } from "@/components/auth/auth-provider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const mockAppointments: Appointment[] = [
   {
-    id: "1",
-    doctor: { id: "1", name: "Dr. Evelyn Reed", specialty: "Cardiology", image: "https://picsum.photos/100/100", location: "New York, NY", qualifications:[], experience:"", reviews:{rating:0,count:0}, availability:[] },
-    date: "2024-08-20",
-    time: "10:00 AM",
-    status: "Upcoming",
-  },
-  {
-    id: "2",
-    doctor: { id: "2", name: "Dr. Samuel Chen", specialty: "Dermatology", image: "https://picsum.photos/101/101", location: "New York, NY", qualifications:[], experience:"", reviews:{rating:0,count:0}, availability:[] },
+    id: "appt_completed_1",
+    doctor: { id: "2", slug: "dr-samuel-chen", name: "Dr. Samuel Chen", specialty: "Dermatology", image: "", location: "New York, NY", qualifications:[], experience:"", reviews:{rating:0,count:0}, availability:[], icon: "Dermatology" },
     date: "2024-07-15",
     time: "02:30 PM",
     status: "Completed",
@@ -47,12 +40,22 @@ const mockOrders: Order[] = [
 export default function ProfilePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments);
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
     }
   }, [user, loading, router]);
+  
+  useEffect(() => {
+    // on mount, load appointments from session storage
+    const storedAppointments = JSON.parse(sessionStorage.getItem("user-appointments") || "[]");
+    const allAppointments = [...mockAppointments, ...storedAppointments];
+    // sort by date
+    allAppointments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    setAppointments(allAppointments);
+  }, []);
 
   if (loading || !user) {
     return (
@@ -99,11 +102,11 @@ export default function ProfilePage() {
               </TabsList>
               <TabsContent value="appointments" className="pt-4">
                  <div className="space-y-4">
-                    {mockAppointments.map(appt => (
+                    {appointments.map(appt => (
                         <Card key={appt.id}>
                             <CardContent className="p-4 flex items-center justify-between">
                                <div className="flex items-center gap-4">
-                                   <Avatar className="h-12 w-12"><AvatarImage src={appt.doctor.image} data-ai-hint="doctor headshot"/></Avatar>
+                                   <Avatar className="h-12 w-12"><AvatarImage src={`https://picsum.photos/seed/${appt.doctor.slug}/100/100`} data-ai-hint="doctor headshot"/></Avatar>
                                    <div>
                                        <p className="font-semibold">{appt.doctor.name}</p>
                                        <p className="text-sm text-muted-foreground">{appt.doctor.specialty}</p>

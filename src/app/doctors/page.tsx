@@ -19,10 +19,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Star, MapPin, Search, Heart, Droplets, Baby, Bone, Clock, Calendar } from "lucide-react";
-import type { Doctor, DoctorSpecialty } from "@/lib/types";
+import type { Doctor, DoctorSpecialty, Appointment } from "@/lib/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { useToast } from "@/hooks/use-toast";
 
 const SpecialtyIcons: Record<DoctorSpecialty, React.ElementType> = {
     Cardiology: Heart,
@@ -37,12 +38,13 @@ const mockDoctors: Doctor[] = [
     name: "Dr. Evelyn Reed",
     specialty: "Cardiology",
     icon: "Cardiology",
+    slug: "dr-evelyn-reed",
     location: "New York, NY",
     qualifications: ["MD", "FACC"],
     experience: "15 years",
     reviews: { rating: 4.9, count: 215 },
     availability: [],
-    image: "https://picsum.photos/seed/person-1/400/400",
+    image: "",
     availableTimes: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM"],
   },
   {
@@ -50,12 +52,13 @@ const mockDoctors: Doctor[] = [
     name: "Dr. Samuel Chen",
     specialty: "Dermatology",
     icon: "Dermatology",
+    slug: "dr-samuel-chen",
     location: "San Francisco, CA",
     qualifications: ["MD", "FAAD"],
     experience: "12 years",
     reviews: { rating: 4.8, count: 189 },
     availability: [],
-    image: "https://picsum.photos/seed/person-2/400/401",
+    image: "",
     availableTimes: ["09:30 AM", "10:30 AM", "11:30 AM", "02:30 PM"],
   },
   {
@@ -63,12 +66,13 @@ const mockDoctors: Doctor[] = [
     name: "Dr. Maria Garcia",
     specialty: "Pediatrics",
     icon: "Pediatrics",
+    slug: "dr-maria-garcia",
     location: "Miami, FL",
     qualifications: ["MD", "FAAP"],
     experience: "20 years",
     reviews: { rating: 4.9, count: 320 },
     availability: [],
-    image: "https://picsum.photos/seed/person-3/401/400",
+    image: "",
     availableTimes: ["08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM"],
   },
   {
@@ -76,12 +80,13 @@ const mockDoctors: Doctor[] = [
     name: "Dr. Ben Carter",
     specialty: "Orthopedics",
     icon: "Orthopedics",
+    slug: "dr-ben-carter",
     location: "Chicago, IL",
     qualifications: ["MD", "FAAOS"],
     experience: "18 years",
     reviews: { rating: 4.7, count: 150 },
     availability: [],
-    image: "https://picsum.photos/seed/person-4/401/401",
+    image: "",
     availableTimes: ["10:00 AM", "11:00 AM", "03:00 PM", "04:00 PM", "05:00 PM"],
   },
 ];
@@ -93,7 +98,7 @@ function DoctorCard({ doctor, onBookClick }: { doctor: Doctor; onBookClick: () =
         <CardContent className="p-6 text-center flex-grow">
             <Link href={`/doctors/${doctor.id}`} className="block">
                 <Image
-                    src={doctor.image}
+                    src={`https://picsum.photos/seed/${doctor.slug}/128/128`}
                     alt={doctor.name}
                     width={128}
                     height={128}
@@ -129,6 +134,7 @@ function BookingModal({ doctor, isOpen, onOpenChange }: { doctor: Doctor | null;
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
   const [isMounted, setIsMounted] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -141,9 +147,23 @@ function BookingModal({ doctor, isOpen, onOpenChange }: { doctor: Doctor | null;
 
   const handleBooking = () => {
     if (doctor && selectedDate && selectedTime) {
-      console.log(`Booked appointment with ${doctor.name} on ${selectedDate.toDateString()} at ${selectedTime}`);
+      const newAppointment: Appointment = {
+        id: `appt_${Date.now()}`,
+        doctor: doctor,
+        date: selectedDate.toISOString().split('T')[0],
+        time: selectedTime,
+        status: "Upcoming",
+      };
+
+      const existingAppointments = JSON.parse(sessionStorage.getItem("user-appointments") || "[]");
+      sessionStorage.setItem("user-appointments", JSON.stringify([...existingAppointments, newAppointment]));
+      
+      toast({
+        title: "Booking Confirmed!",
+        description: `Your appointment with ${doctor.name} is set for ${selectedDate.toDateString()} at ${selectedTime}.`,
+      });
+
       onOpenChange(false);
-      // Here you would typically show a confirmation toast or dialog
     }
   };
 

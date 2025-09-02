@@ -5,18 +5,19 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, Award, Briefcase, MapPin, Calendar, Clock } from "lucide-react";
-import type { Doctor } from "@/lib/types";
+import type { Appointment, Doctor } from "@/lib/types";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 const mockDoctor: Doctor = {
   id: "1",
   name: "Dr. Evelyn Reed",
   specialty: "Cardiology",
   icon: "Cardiology",
+  slug: "dr-evelyn-reed",
   location: "New York, NY",
   qualifications: ["MD, Cornell University", "FACC"],
   experience: "15 years of experience in clinical cardiology, specializing in heart failure and preventative care.",
@@ -32,17 +33,39 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
+  useEffect(() => {
+    if (isBookingOpen) {
+      setSelectedDate(undefined);
+      setSelectedTime(undefined);
+    }
+  }, [isBookingOpen]);
+
 
   const handleBooking = () => {
     if (selectedDate && selectedTime) {
-      // In a real app, you would handle the booking logic here
-      console.log(`Booked appointment with ${doctor.name} on ${selectedDate.toDateString()} at ${selectedTime}`);
+      const newAppointment: Appointment = {
+        id: `appt_${Date.now()}`,
+        doctor: doctor,
+        date: selectedDate.toISOString().split('T')[0],
+        time: selectedTime,
+        status: "Upcoming",
+      };
+
+      const existingAppointments = JSON.parse(sessionStorage.getItem("user-appointments") || "[]");
+      sessionStorage.setItem("user-appointments", JSON.stringify([...existingAppointments, newAppointment]));
+      
+      toast({
+        title: "Booking Confirmed!",
+        description: `Your appointment with ${doctor.name} is set for ${selectedDate.toDateString()} at ${selectedTime}.`,
+      });
+
       setIsBookingOpen(false);
-      // You might want to show a confirmation message
     }
   };
 
@@ -53,7 +76,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
           <CardContent className="p-6">
             <div className="grid gap-8 md:grid-cols-3">
               <div className="md:col-span-1 flex flex-col items-center text-center">
-                <AvatarImage src={doctor.image} alt={doctor.name} />
+                <AvatarImage src={`https://picsum.photos/seed/${doctor.slug}/400/400`} alt={doctor.name} />
                 <h2 className="mt-4 text-2xl font-bold">{doctor.name}</h2>
                 <p className="text-primary font-semibold">{doctor.specialty}</p>
                 <div className="flex items-center text-sm mt-1 text-muted-foreground">

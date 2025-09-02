@@ -5,6 +5,7 @@ export type Doctor = {
   name: string;
   specialty: string;
   icon: DoctorSpecialty;
+  slug: string;
   location: string;
   qualifications: string[];
   experience: string;
