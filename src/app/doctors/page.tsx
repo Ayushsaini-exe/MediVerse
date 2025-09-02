@@ -24,6 +24,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/components/auth/auth-provider";
+import { useRouter } from "next/navigation";
+
 
 const SpecialtyIcons: Record<DoctorSpecialty, React.ElementType> = {
     Cardiology: Heart,
@@ -231,8 +234,15 @@ export default function DoctorsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialty, setSelectedSpecialty] = useState("all");
+  const { user } = useAuth();
+  const router = useRouter();
+
 
   const handleBookClick = (doctor: Doctor) => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
     setSelectedDoctor(doctor);
     setIsModalOpen(true);
   };

@@ -11,6 +11,8 @@ import "react-day-picker/dist/style.css";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/components/auth/auth-provider";
+import { useRouter } from "next/navigation";
 
 const mockDoctor: Doctor = {
   id: "1",
@@ -34,6 +36,8 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -45,6 +49,14 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
       setSelectedTime(undefined);
     }
   }, [isBookingOpen]);
+  
+  const handleBookingTrigger = () => {
+    if (!user) {
+      router.push("/login");
+    } else {
+      setIsBookingOpen(true);
+    }
+  };
 
 
   const handleBooking = () => {
@@ -108,7 +120,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
 
                 <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
                   <DialogTrigger asChild>
-                     <Button className="w-full !bg-accent hover:!bg-accent/90">
+                     <Button className="w-full !bg-accent hover:!bg-accent/90" onClick={handleBookingTrigger}>
                         Book Video Consultation
                     </Button>
                   </DialogTrigger>
