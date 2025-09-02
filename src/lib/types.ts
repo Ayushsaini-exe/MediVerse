@@ -1,13 +1,18 @@
+export type DoctorSpecialty = "Cardiology" | "Dermatology" | "Pediatrics" | "Orthopedics";
+
 export type Doctor = {
   id: string;
   name: string;
   specialty: string;
+  icon: DoctorSpecialty;
+  slug: string;
   location: string;
   qualifications: string[];
   experience: string;
   reviews: { rating: number; count: number };
   availability: string[];
   image: string;
+  availableTimes?: string[];
 };
 
 export type Product = {
