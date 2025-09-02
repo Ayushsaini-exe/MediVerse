@@ -40,7 +40,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
+    <Sidebar collapsible="offcanvas" variant="sidebar">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <Logo className="w-8 h-8 text-sidebar-foreground" />
