@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import {
   Card,
@@ -8,31 +10,26 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ShoppingCart, CheckCircle, AlertTriangle } from "lucide-react";
 import type { Product } from "@/lib/types";
-
-const mockProduct: Product = {
-  id: "1",
-  name: "Paracetamol 500mg Tablets",
-  description: "Provides effective relief from mild to moderate pain including headache, migraine, toothache, and sore throat. Also helps to reduce fever.",
-  price: 5.99,
-  category: "Pain Relief",
-  image: "https://picsum.photos/600/600",
-  uses: [
-    "Headache & Migraine",
-    "Fever Reduction",
-    "Toothache & Neuralgia",
-    "Cold & Flu Symptoms",
-  ],
-  sideEffects: [
-    "Allergic reactions",
-    "Skin rashes",
-    "Blood disorders (rare)",
-    "Consult a doctor if symptoms persist",
-  ]
-};
+import { mockProducts } from "@/lib/mock-products";
+import { useCart } from "@/context/cart-context";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ProductDetailsPage({ params }: { params: { id: string } }) {
-  // In a real app, you'd fetch the product by params.id
-  const product = mockProduct;
+  const product = mockProducts.find(p => p.id === params.id);
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -42,21 +39,21 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
             <div className="grid gap-8 md:grid-cols-2">
               <div>
                 <div className="relative aspect-square w-full max-w-md mx-auto rounded-lg overflow-hidden border">
-                   <Image
+                   {product.image && <Image
                     src={product.image}
                     alt={product.name}
                     fill
                     className="object-cover"
                     data-ai-hint="product bottle pills"
-                  />
+                  />}
                 </div>
               </div>
               <div className="space-y-4">
                 <Badge variant="secondary">{product.category}</Badge>
                 <h1 className="text-3xl font-headline font-bold">{product.name}</h1>
                 <p className="text-muted-foreground">{product.description}</p>
-                <p className="text-4xl font-bold text-primary">${product.price.toFixed(2)}</p>
-                <Button size="lg" className="w-full bg-accent hover:bg-accent/90">
+                <p className="text-4xl font-bold text-primary">₹{product.price.toFixed(2)}</p>
+                <Button size="lg" className="w-full bg-accent hover:bg-accent/90" onClick={handleAddToCart}>
                   <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
                 </Button>
                 <Separator className="my-6" />

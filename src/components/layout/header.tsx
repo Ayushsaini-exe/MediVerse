@@ -4,8 +4,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Bot, User, LogOut, Stethoscope, Pill, Info } from "lucide-react";
+import { LayoutDashboard, Bot, User, LogOut, Stethoscope, Pill, Info, ShoppingCart } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useCart } from "@/context/cart-context";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -29,6 +30,7 @@ const topNavLinks = [
 export function Header() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { cart } = useCart();
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -46,7 +48,17 @@ export function Header() {
               <h1 className="text-2xl font-headline font-semibold hidden md:block">MediVerse</h1>
             </Link>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          <Link href="/pharmacy/cart">
+             <Button variant="ghost" size="icon" className="relative">
+                  <ShoppingCart className="h-5 w-5"/>
+                  {cart.length > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {cart.length}
+                    </span>
+                  )}
+              </Button>
+            </Link>
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
