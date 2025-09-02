@@ -1,8 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/layout/app-sidebar";
+import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/toaster";
 import { Chatbot } from "@/components/chatbot/chatbot";
 import { AuthProvider } from "@/components/auth/auth-provider";
@@ -33,12 +32,10 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <AuthProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <div className="min-h-screen">{children}</div>
-            </SidebarInset>
-          </SidebarProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <div className="flex-1">{children}</div>
+          </div>
           <Toaster />
           <Chatbot />
         </AuthProvider>

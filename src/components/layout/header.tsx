@@ -3,9 +3,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Bot, User, LogOut } from "lucide-react";
+import { LayoutDashboard, Bot, User, LogOut, Stethoscope, Pill } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +24,8 @@ type HeaderProps = {
 
 const topNavLinks = [
   { href: "/", label: "Home", icon: LayoutDashboard },
+  { href: "/doctors", icon: Stethoscope, label: "Doctors" },
+    { href: "/pharmacy", icon: Pill, label: "Pharmacy" },
   { href: "/ai-tools", label: "AI Tools", icon: Bot },
 ];
 
@@ -40,20 +41,33 @@ export function Header({ title }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex flex-col items-start gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 sm:px-6">
-      <div className="flex h-14 w-full items-center">
-        <div className="flex items-center gap-2">
-          <SidebarTrigger className="md:hidden" />
-          {title ? (
-            <h1 className="text-2xl font-headline font-semibold">{title}</h1>
-          ) : (
-            <Link href="/" className="flex items-center gap-2">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
+       <div className="flex items-center gap-2">
+           <Link href="/" className="flex items-center gap-2">
               <Logo className="w-8 h-8 text-primary" />
-              <h1 className="text-2xl font-headline font-semibold">MediVerse</h1>
+              <h1 className="text-2xl font-headline font-semibold hidden md:block">MediVerse</h1>
             </Link>
-          )}
         </div>
-        <div className="ml-auto">
+      <nav className="flex-1">
+        <div className="flex items-center justify-center gap-4">
+          {topNavLinks.map((link) => (
+            <Link key={link.href} href={link.href} passHref>
+              <div
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2 border-b-2 transition-colors",
+                  isActive(link.href)
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <link.icon className="h-5 w-5" />
+                <span className="text-sm font-medium hidden sm:inline">{link.label}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </nav>
+        <div className="flex items-center gap-2">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -61,7 +75,7 @@ export function Header({ title }: HeaderProps) {
                   variant="ghost"
                   className="relative flex items-center gap-2 h-10"
                 >
-                  <span>{user.name}</span>
+                  <span className="hidden sm:inline">{user.name}</span>
                   <Avatar className="h-8 w-8">
                      <AvatarImage src={`https://picsum.photos/seed/${user.id}/100/100`} />
                     <AvatarFallback>
@@ -101,26 +115,6 @@ export function Header({ title }: HeaderProps) {
             </Button>
           )}
         </div>
-      </div>
-      <nav className="w-full">
-        <div className="flex items-center gap-4">
-          {topNavLinks.map((link) => (
-            <Link key={link.href} href={link.href} passHref>
-              <div
-                className={cn(
-                  "flex items-center gap-2 px-3 py-2 border-b-2 transition-colors",
-                  isActive(link.href)
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <link.icon className="h-5 w-5" />
-                <span className="text-sm font-medium">{link.label}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </nav>
     </header>
   );
 }

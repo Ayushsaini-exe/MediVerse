@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Stethoscope, Pill, Bot } from "lucide-react";
-import { Header } from "@/components/layout/header";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +35,6 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col w-full">
-      <Header />
       <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-headline font-bold text-primary">

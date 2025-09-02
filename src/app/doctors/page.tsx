@@ -1,7 +1,6 @@
 // src/app/doctors/page.tsx
 import Link from "next/link";
 import Image from "next/image";
-import { Header } from "@/components/layout/header";
 import {
   Card,
   CardContent,
@@ -105,7 +104,6 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
 export default function DoctorsPage() {
   return (
     <div className="flex flex-col w-full font-pixel bg-[#E0F2FE] min-h-screen">
-      <Header title="Find a Doctor" />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <Card className="mb-6 rounded-none border-4 border-black shadow-[4px_4px_0px_#000] p-4 bg-white">
           <div className="grid gap-4 md:grid-cols-3">

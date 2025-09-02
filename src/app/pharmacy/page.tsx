@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Header } from "@/components/layout/header";
 import {
   Card,
   CardContent,
@@ -96,7 +95,6 @@ function ProductCard({ product }: { product: Product }) {
 export default function PharmacyPage() {
   return (
     <div className="flex flex-col w-full">
-      <Header title="Pharmacy" />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="mb-6 space-y-4">
           <div className="grid gap-4 md:grid-cols-2">

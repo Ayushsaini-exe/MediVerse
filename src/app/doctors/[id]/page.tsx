@@ -2,7 +2,6 @@
 "use client";
 
 import Image from "next/image";
-import { Header } from "@/components/layout/header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, Award, Briefcase, MapPin, Calendar, Clock } from "lucide-react";
@@ -36,7 +35,6 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
 
   return (
     <div className="flex flex-col w-full font-pixel bg-[#E0F2FE] text-[#1E293B]">
-      <Header title="Doctor Profile" />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <Card className="rounded-none border-4 border-black shadow-[4px_4px_0px_#000] relative overflow-hidden">
           <div className="absolute -right-10 -top-10 opacity-10 text-black">

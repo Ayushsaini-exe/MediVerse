@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Header } from "@/components/layout/header";
 import {
   Card,
   CardContent,
@@ -37,7 +36,6 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
 
   return (
     <div className="flex flex-col w-full">
-      <Header title="Product Details" />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <Card>
           <CardContent className="p-6">

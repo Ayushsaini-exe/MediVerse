@@ -2,7 +2,6 @@
 "use client";
 
 import { useState } from "react";
-import { Header } from "@/components/layout/header";
 import {
   Card,
   CardContent,
@@ -52,7 +51,6 @@ export default function StressPredictionPage() {
 
   return (
     <div className="flex flex-col w-full">
-      <Header title="Stress Level Prediction" />
       <main className="flex-1 p-4 md:p-6 lg:p-8 flex justify-center items-start">
         <Card className="w-full max-w-2xl">
           <CardHeader>

@@ -2,7 +2,6 @@
 "use client";
 
 import Image from "next/image";
-import { Header } from "@/components/layout/header";
 import {
   Card,
   CardContent,
@@ -58,7 +57,6 @@ export default function ProfilePage() {
   if (loading || !user) {
     return (
       <div className="flex flex-col w-full">
-        <Header title="My Profile" />
         <main className="flex-1 p-4 md:p-6 lg:p-8">
             <Card>
                 <CardHeader className="flex-row items-center gap-4">
@@ -79,7 +77,6 @@ export default function ProfilePage() {
   
   return (
     <div className="flex flex-col w-full">
-      <Header title="My Profile" />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <Card>
           <CardHeader className="flex-row items-center gap-4">
