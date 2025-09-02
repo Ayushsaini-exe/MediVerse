@@ -3,21 +3,14 @@
 
 import Image from "next/image";
 import { Header } from "@/components/layout/header";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Star, Award, Briefcase, MapPin, Calendar, Clock } from "lucide-react";
 import type { Doctor } from "@/lib/types";
-import { HeartPulse } from 'lucide-react';
 import { CardiologyIcon } from "@/components/icons/cardiology-icon";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useEffect, useState } from "react";
-
 
 const mockDoctor: Doctor = {
   id: "1",
@@ -104,7 +97,7 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
                         </div>
                     </div>
                     <div className="space-y-2">
-                         <h3 className="text-lg fontsemibold flex items-center gap-2">
+                         <h3 className="text-lg font-semibold flex items-center gap-2">
                            <Clock className="w-5 h-5 text-primary" /> Book Time
                         </h3>
                         <div className="grid grid-cols-2 gap-2 pt-2">

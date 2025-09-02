@@ -15,7 +15,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Mail, Calendar, CheckCircle, Truck, Package } from "lucide-react";
 import type { Appointment, Order } from "@/lib/types";
