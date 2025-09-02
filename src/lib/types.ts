@@ -1,7 +1,10 @@
+export type DoctorSpecialty = "Cardiology" | "Dermatology" | "Pediatrics" | "Orthopedics";
+
 export type Doctor = {
   id: string;
   name: string;
   specialty: string;
+  icon: DoctorSpecialty;
   location: string;
   qualifications: string[];
   experience: string;
