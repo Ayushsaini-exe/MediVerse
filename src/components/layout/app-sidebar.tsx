@@ -17,13 +17,16 @@ import {
   Bot,
   User,
   LogOut,
+  LogIn,
 } from "lucide-react";
 import { Logo } from "@/components/icons/logo";
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
+import { useAuth } from "@/components/auth/auth-provider";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { user, logout } = useAuth();
 
   const menuItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard", tooltip: "Dashboard" },
@@ -31,18 +34,9 @@ export function AppSidebar() {
     { href: "/pharmacy", icon: Pill, label: "Pharmacy", tooltip: "Pharmacy" },
     { href: "/ai-tools", icon: Bot, label: "AI Tools", tooltip: "AI Tools" },
   ];
-  
-  const bottomMenuItems = [
-    { href: "/profile", icon: User, label: "Profile", tooltip: "Profile" },
-  ];
 
   const isActive = (href: string) => {
     return pathname === href;
-  };
-
-  const handleLogout = async () => {
-    // Placeholder for logout functionality
-    console.log("Logout clicked");
   };
 
   return (
@@ -72,28 +66,42 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          {bottomMenuItems.map((item) => (
-             <SidebarMenuItem key={item.href}>
-                <Link href={item.href}>
-                    <SidebarMenuButton
-                    isActive={isActive(item.href)}
-                    tooltip={item.tooltip}
-                    >
-                    <item.icon />
-                    <span>{item.label}</span>
-                    </SidebarMenuButton>
+          {user ? (
+            <>
+              <SidebarMenuItem>
+                <Link href="/profile">
+                  <SidebarMenuButton
+                    isActive={isActive("/profile")}
+                    tooltip="Profile"
+                  >
+                    <User />
+                    <span>Profile</span>
+                  </SidebarMenuButton>
                 </Link>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={logout}
+                  tooltip="Logout"
+                >
+                  <LogOut />
+                  <span>Logout</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </>
+          ) : (
+            <SidebarMenuItem>
+              <Link href="/login">
+                <SidebarMenuButton
+                  isActive={isActive("/login")}
+                  tooltip="Login"
+                >
+                  <LogIn />
+                  <span>Login</span>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
-          ))}
-           <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={handleLogout}
-                tooltip="Logout"
-              >
-                <LogOut />
-                <span>Logout</span>
-              </SidebarMenuButton>
-          </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

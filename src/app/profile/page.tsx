@@ -6,7 +6,6 @@ import { Header } from "@/components/layout/header";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,9 +17,12 @@ import {
 } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, Calendar, ShoppingBag, MapPin, User, CheckCircle, Truck, Package } from "lucide-react";
+import { Mail, Calendar, CheckCircle, Truck, Package } from "lucide-react";
 import type { Appointment, Order } from "@/lib/types";
+import { useAuth } from "@/components/auth/auth-provider";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const mockAppointments: Appointment[] = [
   {
@@ -45,6 +47,36 @@ const mockOrders: Order[] = [
 ];
 
 export default function ProfilePage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex flex-col w-full">
+        <Header title="My Profile" />
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
+            <Card>
+                <CardHeader className="flex-row items-center gap-4">
+                    <Skeleton className="h-20 w-20 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-8 w-32" />
+                        <Skeleton className="h-5 w-48" />
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <Skeleton className="h-96 w-full" />
+                </CardContent>
+            </Card>
+        </main>
+      </div>
+    );
+  }
   
   return (
     <div className="flex flex-col w-full">
@@ -54,15 +86,14 @@ export default function ProfilePage() {
           <CardHeader className="flex-row items-center gap-4">
             <Avatar className="h-20 w-20">
               <AvatarImage src={"https://picsum.photos/200"} data-ai-hint="person" />
-              <AvatarFallback>U</AvatarFallback>
+              <AvatarFallback>G</AvatarFallback>
             </Avatar>
             <div>
-              <CardTitle className="text-3xl font-headline">User</CardTitle>
+              <CardTitle className="text-3xl font-headline">Guest User</CardTitle>
               <div className="flex flex-col md:flex-row md:items-center gap-x-4 gap-y-1 text-muted-foreground mt-1">
-                 <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>user@example.com</div>
+                 <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>guest@example.com</div>
               </div>
             </div>
-            <Button className="ml-auto">Edit Profile</Button>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="appointments" className="w-full">
