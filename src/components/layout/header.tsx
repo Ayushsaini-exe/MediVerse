@@ -18,10 +18,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/icons/logo";
 
-type HeaderProps = {
-  title?: string;
-};
-
 const topNavLinks = [
   { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/doctors", icon: Stethoscope, label: "Doctors" },
@@ -30,7 +26,7 @@ const topNavLinks = [
   { href: "/about", label: "About Us", icon: Info },
 ];
 
-export function Header({ title }: HeaderProps) {
+export function Header() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
@@ -42,32 +38,14 @@ export function Header({ title }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
-       <div className="flex items-center gap-2">
+    <header className="sticky top-0 z-30 flex flex-col border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-14 items-center gap-4 px-4 sm:px-6">
+        <div className="flex items-center gap-2 flex-1">
            <Link href="/" className="flex items-center gap-2">
               <Logo className="w-8 h-8 text-primary" />
               <h1 className="text-2xl font-headline font-semibold hidden md:block">MediVerse</h1>
             </Link>
         </div>
-      <nav className="flex-1">
-        <div className="flex items-center justify-center gap-4">
-          {topNavLinks.map((link) => (
-            <Link key={link.href} href={link.href} passHref>
-              <div
-                className={cn(
-                  "flex items-center gap-2 px-3 py-2 border-b-2 transition-colors",
-                  isActive(link.href)
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <link.icon className="h-5 w-5" />
-                <span className="text-sm font-medium hidden sm:inline">{link.label}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </nav>
         <div className="flex items-center gap-2">
           {user ? (
             <DropdownMenu>
@@ -116,6 +94,26 @@ export function Header({ title }: HeaderProps) {
             </Button>
           )}
         </div>
+      </div>
+       <nav className="flex-1 border-t">
+        <div className="flex items-center justify-center gap-4 h-12">
+          {topNavLinks.map((link) => (
+            <Link key={link.href} href={link.href} passHref>
+              <div
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2 border-b-2 h-full transition-colors",
+                  isActive(link.href)
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <link.icon className="h-5 w-5" />
+                <span className="text-sm font-medium hidden sm:inline">{link.label}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </nav>
     </header>
   );
 }
