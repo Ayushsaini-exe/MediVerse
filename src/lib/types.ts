@@ -11,6 +11,7 @@ export type Doctor = {
   reviews: { rating: number; count: number };
   availability: string[];
   image: string;
+  availableTimes?: string[];
 };
 
 export type Product = {

@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -20,8 +21,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Search, Heart, Droplets, Baby, Bone } from "lucide-react";
+import { Star, MapPin, Search, Heart, Droplets, Baby, Bone, Clock, Calendar } from "lucide-react";
 import type { Doctor, DoctorSpecialty } from "@/lib/types";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 const SpecialtyIcons: Record<DoctorSpecialty, React.ElementType> = {
     Cardiology: Heart,
@@ -42,6 +46,7 @@ const mockDoctors: Doctor[] = [
     reviews: { rating: 4.9, count: 215 },
     availability: [],
     image: "https://picsum.photos/seed/person-1/400/400",
+    availableTimes: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM"],
   },
   {
     id: "2",
@@ -54,6 +59,7 @@ const mockDoctors: Doctor[] = [
     reviews: { rating: 4.8, count: 189 },
     availability: [],
     image: "https://picsum.photos/seed/person-2/400/401",
+    availableTimes: ["09:30 AM", "10:30 AM", "11:30 AM", "02:30 PM"],
   },
   {
     id: "3",
@@ -66,6 +72,7 @@ const mockDoctors: Doctor[] = [
     reviews: { rating: 4.9, count: 320 },
     availability: [],
     image: "https://picsum.photos/seed/person-3/401/400",
+    availableTimes: ["08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM"],
   },
   {
     id: "4",
@@ -78,14 +85,15 @@ const mockDoctors: Doctor[] = [
     reviews: { rating: 4.7, count: 150 },
     availability: [],
     image: "https://picsum.photos/seed/person-4/401/401",
+    availableTimes: ["10:00 AM", "11:00 AM", "03:00 PM", "04:00 PM", "05:00 PM"],
   },
 ];
 
-function DoctorCard({ doctor }: { doctor: Doctor }) {
+function DoctorCard({ doctor, onBookClick }: { doctor: Doctor; onBookClick: () => void; }) {
   const Icon = SpecialtyIcons[doctor.icon];
   return (
-    <Card className="transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-        <CardContent className="p-6 text-center">
+    <Card className="transform transition-transform duration-300 hover:scale-105 hover:shadow-xl flex flex-col">
+        <CardContent className="p-6 text-center flex-grow">
             <Link href={`/doctors/${doctor.id}`} className="block">
                 <Image
                     src={doctor.image}
@@ -112,7 +120,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             </div>
         </CardContent>
         <CardFooter className="p-4 pt-0">
-             <Button className="w-full bg-accent hover:bg-accent/90">
+             <Button className="w-full bg-accent hover:bg-accent/90" onClick={onBookClick}>
                 Book an Appointment
             </Button>
         </CardFooter>
@@ -120,7 +128,96 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
   );
 }
 
+function BookingModal({ doctor, isOpen, onOpenChange }: { doctor: Doctor | null; isOpen: boolean; onOpenChange: (open: boolean) => void; }) {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedTime, setSelectedTime] = useState<string | undefined>();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    // Reset state when modal is reopened or doctor changes
+    if (isOpen) {
+      setSelectedDate(undefined);
+      setSelectedTime(undefined);
+    }
+  }, [isOpen, doctor]);
+
+  const handleBooking = () => {
+    if (doctor && selectedDate && selectedTime) {
+      console.log(`Booked appointment with ${doctor.name} on ${selectedDate.toDateString()} at ${selectedTime}`);
+      onOpenChange(false);
+      // Here you would typically show a confirmation toast or dialog
+    }
+  };
+
+  if (!doctor) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[650px]">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-headline">Book Appointment</DialogTitle>
+          <DialogDescription>
+            Schedule a video consultation with {doctor.name}.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-6 md:grid-cols-2 py-4">
+          <div>
+            <h3 className="text-md font-semibold flex items-center gap-2 mb-2">
+              <Calendar className="w-5 h-5 text-primary" /> Select Date
+            </h3>
+            <div className="p-0 rounded-md border">
+              {isMounted && <DayPicker
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                className="!m-0"
+                disabled={{ before: new Date() }}
+              />}
+            </div>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-md font-semibold flex items-center gap-2 mb-2">
+              <Clock className="w-5 h-5 text-primary" /> Select Time
+            </h3>
+            {selectedDate ? (
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                {doctor.availableTimes?.map(time => (
+                  <Button
+                    key={time}
+                    variant={selectedTime === time ? "default" : "outline"}
+                    onClick={() => setSelectedTime(time)}
+                  >
+                    {time}
+                  </Button>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground pt-2">Please select a date to see available times.</p>
+            )}
+             <Button
+                className="w-full mt-4 !bg-accent hover:!bg-accent/90"
+                disabled={!selectedDate || !selectedTime}
+                onClick={handleBooking}
+              >
+                Confirm Booking for {selectedTime}
+              </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function DoctorsPage() {
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleBookClick = (doctor: Doctor) => {
+    setSelectedDoctor(doctor);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="flex flex-col w-full min-h-screen">
        <main className="flex-1 p-4 md:p-6 lg:p-8">
@@ -153,9 +250,15 @@ export default function DoctorsPage() {
         </Card>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {mockDoctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
+            <DoctorCard key={doctor.id} doctor={doctor} onBookClick={() => handleBookClick(doctor)} />
           ))}
         </div>
+
+        <BookingModal
+          doctor={selectedDoctor}
+          isOpen={isModalOpen}
+          onOpenChange={setIsModalOpen}
+        />
       </main>
     </div>
   );

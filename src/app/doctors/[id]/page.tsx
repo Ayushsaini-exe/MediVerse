@@ -6,10 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, Award, Briefcase, MapPin, Calendar, Clock } from "lucide-react";
 import type { Doctor } from "@/lib/types";
-import { CardiologyIcon } from "@/components/icons/cardiology-icon";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 
 const mockDoctor: Doctor = {
   id: "1",
@@ -22,17 +23,28 @@ const mockDoctor: Doctor = {
   reviews: { rating: 4.9, count: 215 },
   availability: ["2024-08-20", "2024-08-22", "2024-08-25"],
   image: "https://picsum.photos/seed/dr-reed/400/400",
+  availableTimes: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM"],
 };
 
 export default function DoctorProfilePage({ params }: { params: { id: string } }) {
   const doctor = mockDoctor;
   const [isMounted, setIsMounted] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedTime, setSelectedTime] = useState<string | undefined>();
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const timeSlots = ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM"];
+  const handleBooking = () => {
+    if (selectedDate && selectedTime) {
+      // In a real app, you would handle the booking logic here
+      console.log(`Booked appointment with ${doctor.name} on ${selectedDate.toDateString()} at ${selectedTime}`);
+      setIsBookingOpen(false);
+      // You might want to show a confirmation message
+    }
+  };
 
   return (
     <div className="flex flex-col w-full bg-background text-foreground">
@@ -71,40 +83,64 @@ export default function DoctorProfilePage({ params }: { params: { id: string } }
                   </ul>
                 </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Book an Appointment</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-6 md:grid-cols-2">
-                         <div>
-                            <h3 className="text-md font-semibold flex items-center gap-2 mb-2">
-                               <Calendar className="w-5 h-5 text-primary" /> Select Date
-                            </h3>
-                            <div className="p-0 rounded-md border">
-                                 {isMounted && <DayPicker 
-                                    mode="single"
-                                    className="!m-0"
-                                />}
-                            </div>
+                <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
+                  <DialogTrigger asChild>
+                     <Button className="w-full !bg-accent hover:!bg-accent/90">
+                        Book Video Consultation
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[650px]">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-headline">Book Appointment</DialogTitle>
+                      <DialogDescription>
+                        Schedule a video consultation with {doctor.name}.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-6 md:grid-cols-2 py-4">
+                      <div>
+                        <h3 className="text-md font-semibold flex items-center gap-2 mb-2">
+                          <Calendar className="w-5 h-5 text-primary" /> Select Date
+                        </h3>
+                        <div className="p-0 rounded-md border">
+                          {isMounted && <DayPicker 
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={setSelectedDate}
+                            className="!m-0"
+                            disabled={{ before: new Date() }}
+                          />}
                         </div>
-                        <div className="space-y-2">
-                             <h3 className="text-md font-semibold flex items-center gap-2 mb-2">
-                               <Clock className="w-5 h-5 text-primary" /> Select Time
-                            </h3>
-                            <div className="grid grid-cols-2 gap-2 pt-2">
-                                {timeSlots.map(time => (
-                                    <Button key={time} variant="outline">
-                                        {time}
-                                    </Button>
-                                ))}
-                            </div>
-                             <Button className="w-full mt-4 !bg-accent hover:!bg-accent/90">
-                                Book Video Consultation
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
-
+                      </div>
+                      <div className="space-y-4">
+                        <h3 className="text-md font-semibold flex items-center gap-2 mb-2">
+                          <Clock className="w-5 h-5 text-primary" /> Select Time
+                        </h3>
+                        {selectedDate ? (
+                          <div className="grid grid-cols-2 gap-2 pt-2">
+                            {doctor.availableTimes?.map(time => (
+                              <Button 
+                                key={time} 
+                                variant={selectedTime === time ? "default" : "outline"}
+                                onClick={() => setSelectedTime(time)}
+                              >
+                                {time}
+                              </Button>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground pt-2">Please select a date to see available times.</p>
+                        )}
+                        <Button 
+                          className="w-full mt-4 !bg-accent hover:!bg-accent/90"
+                          disabled={!selectedDate || !selectedTime}
+                          onClick={handleBooking}
+                        >
+                          Confirm Booking for {selectedTime}
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </CardContent>
